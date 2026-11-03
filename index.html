@@ -1,0 +1,332 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Zullz Skill-Sharing V1</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <!-- Supabase JS SDK -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <!-- Secure Environment Config -->
+    <script src="env/config.js"></script>
+</head>
+<body>
+    <!-- Header / Navbar -->
+    <header class="navbar">
+        <div class="container nav-container">
+            <div class="logo">
+                <span class="logo-icon">⚡</span>
+                <span class="logo-text">Zullz Skill-Sharing</span>
+                <span class="badge-v1">V1 + Supabase</span>
+            </div>
+            <nav class="nav-links">
+                <a href="#home" class="active">Beranda</a>
+                <a href="#classes">Katalog Kelas</a>
+                <a href="#mentors">Mentor</a>
+                <a href="#about">Tentang Kami</a>
+            </nav>
+            <div class="nav-actions">
+                <button class="btn btn-outline" id="openConfigBtn">⚙️ Supabase</button>
+                <button class="btn btn-secondary" id="openAdminLoginBtn">🔒 Admin Login</button>
+                <button class="btn btn-primary" id="openMentorModalBtn">Daftar Jadi Mentor</button>
+            </div>
+            <button class="mobile-menu-btn" id="mobileMenuBtn">☰</button>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section id="home" class="hero">
+        <div class="container hero-container">
+            <div class="hero-content">
+                <div class="hero-tag">🌟 Secure Admin Dashboard & Supabase Powered</div>
+                <h1>Kuasai Keterampilan Baru Bersama <span class="gradient-text">Zullz Skill-Sharing</span></h1>
+                <p>Platform komunitas terbuka dengan verifikasi admin yang ketat dan database real-time.</p>
+                <div class="hero-buttons">
+                    <button class="btn btn-primary btn-lg" onclick="location.href='#classes'">Cari Kelas Gratis</button>
+                    <button class="btn btn-secondary btn-lg" onclick="location.href='#mentors'">Daftar Mentor</button>
+                </div>
+                <div class="hero-stats">
+                    <div class="stat-item">
+                        <span class="stat-num" id="statClasses">0</span>
+                        <span class="stat-label">Kelas Aktif</span>
+                    </div>
+                    <div class="stat-divider"></div>
+                    <div class="stat-item">
+                        <span class="stat-num" id="statStudents">0</span>
+                        <span class="stat-label">Peserta Terdaftar</span>
+                    </div>
+                    <div class="stat-divider"></div>
+                    <div class="stat-item">
+                        <span class="stat-num" id="statMentors">0</span>
+                        <span class="stat-label">Mentor Terdaftar</span>
+                    </div>
+                </div>
+            </div>
+            <div class="hero-visual">
+                <div class="hero-card-floating card-1">
+                    <span class="card-icon">⚡</span>
+                    <div>
+                        <h4>Koneksi Supabase</h4>
+                        <p id="supabaseStatusText" style="color: #d97706;">Belum dikonfigurasi</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Classes Section -->
+    <section id="classes" class="classes-section">
+        <div class="container">
+            <div class="section-header">
+                <h2>Katalog Kelas Dari Database</h2>
+                <p>Data kelas diambil secara langsung dari tabel Supabase Anda</p>
+                <div class="category-filters">
+                    <button class="filter-btn active" data-category="all">Semua Kelas</button>
+                    <button class="filter-btn" data-category="tech">Teknologi & Coding</button>
+                    <button class="filter-btn" data-category="design">Desain & Kreatif</button>
+                    <button class="filter-btn" data-category="business">Bisnis & UMKM</button>
+                </div>
+            </div>
+
+            <div class="classes-grid" id="classesGrid">
+                <div class="empty-state">
+                    <p>Belum ada data kelas di Supabase. Silakan tambahkan data ke tabel <code>classes</code>.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Mentors Section -->
+    <section id="mentors" class="mentors-section">
+        <div class="container">
+            <div class="section-header">
+                <h2>Daftar Mentor Terverifikasi</h2>
+                <p>Mentor yang telah disetujui oleh Admin</p>
+            </div>
+            <div class="mentors-grid" id="mentorsGrid">
+                <div class="empty-state">
+                    <p>Belum ada mentor yang disetujui di tabel <code>mentors</code>.</p>
+                </div>
+            </div>
+            <div class="mentor-banner">
+                <div class="banner-content">
+                    <h3>Mulai Perjalanan Mengajarmu</h3>
+                    <p>Daftarkan diri Anda sebagai mentor dan tunggu persetujuan dari Admin Zullz.</p>
+                </div>
+                <button class="btn btn-accent btn-lg" id="registerMentorBtn">Daftar Jadi Mentor Sekarang</button>
+            </div>
+        </div>
+    </section>
+
+    <!-- About Section -->
+    <section id="about" class="about-section">
+        <div class="container about-container">
+            <div class="about-image">
+                <div class="about-card-box">
+                    <h3>Secure & Verified</h3>
+                    <p>Sistem keamanan berbasis role admin eksklusif untuk menjaga kualitas platform.</p>
+                </div>
+            </div>
+            <div class="about-content">
+                <div class="hero-tag">Arsitektur V1</div>
+                <h2>Keamanan & Kontrol Penuh oleh Admin</h2>
+                <p>Hanya admin terotorisasi yang dapat meninjau, menerima, atau mengelola data peserta dan pendaftaran mentor.</p>
+                <ul class="about-list">
+                    <li>✓ <strong>Role-based Security:</strong> Akses ketat berbasis autentikasi admin.</li>
+                    <li>✓ <strong>Environment Isolation:</strong> Konfigurasi terisolasi di folder <code>env/</code>.</li>
+                    <li>✓ <strong>Approval System:</strong> Validasi ketat sebelum peserta/mentor ditampilkan.</li>
+                </ul>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container footer-container">
+            <div class="footer-brand">
+                <div class="logo">
+                    <span class="logo-icon">⚡</span>
+                    <span class="logo-text">Zullz Skill-Sharing</span>
+                </div>
+                <p>Platform skill-sharing terbuka bertenaga Supabase dengan sistem Admin Aman.</p>
+            </div>
+            <div class="footer-links">
+                <h4>Navigasi</h4>
+                <a href="#home">Beranda</a>
+                <a href="#classes">Katalog Kelas</a>
+                <a href="#mentors">Mentor</a>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2026 Zullz Skill-Sharing V1. Secure Admin Edition.</p>
+        </div>
+    </footer>
+
+    <!-- Modal Admin Login -->
+    <div class="modal" id="adminLoginModal">
+        <div class="modal-content">
+            <button class="modal-close" id="closeAdminLoginModal">&times;</button>
+            <div class="modal-header">
+                <span class="badge-modal accent">Keamanan Eksklusif</span>
+                <h3>Admin Login</h3>
+                <p>Masukkan kredensial khusus administrator Zullz.</p>
+            </div>
+            <form id="adminLoginForm">
+                <div class="form-group">
+                    <label for="adminEmail">Email Admin</label>
+                    <input type="email" id="adminEmail" required placeholder="adminzulz@skil.com">
+                </div>
+                <div class="form-group">
+                    <label for="adminPass">Password</label>
+                    <input type="password" id="adminPass" required placeholder="••••••••••••">
+                </div>
+                <button type="submit" class="btn btn-accent btn-block">Masuk ke Admin Dashboard</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Modal Admin Dashboard -->
+    <div class="modal modal-lg" id="adminDashboardModal">
+        <div class="modal-content modal-content-wide">
+            <button class="modal-close" id="closeAdminDashboardModal">&times;</button>
+            <div class="modal-header">
+                <span class="badge-modal">Admin Control Panel</span>
+                <h3>Dashboard Administrator Zullz</h3>
+                <p>Kelola dan setujui pendaftaran peserta kelas serta mentor baru.</p>
+            </div>
+            <div class="admin-tabs">
+                <button class="admin-tab-btn active" data-tab="tabEnrollments">Pendaftaran Peserta (<span id="countEnroll">0</span>)</button>
+                <button class="admin-tab-btn" data-tab="tabMentors">Pendaftaran Mentor (<span id="countMentors">0</span>)</button>
+                <button class="btn btn-outline" id="adminLogoutBtn" style="margin-left: auto; padding: 6px 14px; font-size: 13px;">Logout</button>
+            </div>
+            
+            <div class="admin-tab-content active" id="tabEnrollments">
+                <div class="table-responsive">
+                    <table class="admin-table">
+                        <thead>
+                            <tr>
+                                <th>Nama Peserta</th>
+                                <th>Email</th>
+                                <th>WhatsApp</th>
+                                <th>ID Kelas</th>
+                                <th>Status</th>
+                                <th>Aksi</th>
+                            </tr>
+                        </thead>
+                        <tbody id="enrollmentsTableBody">
+                            <!-- Injected by JS -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <div class="admin-tab-content" id="tabMentors" style="display: none;">
+                <div class="table-responsive">
+                    <table class="admin-table">
+                        <thead>
+                            <tr>
+                                <th>Nama Mentor</th>
+                                <th>Keahlian / Peran</th>
+                                <th>Bio</th>
+                                <th>Status</th>
+                                <th>Aksi</th>
+                            </tr>
+                        </thead>
+                        <tbody id="mentorsTableBody">
+                            <!-- Injected by JS -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Konfigurasi Supabase -->
+    <div class="modal" id="configModal">
+        <div class="modal-content">
+            <button class="modal-close" id="closeConfigModal">&times;</button>
+            <div class="modal-header">
+                <span class="badge-modal">Database Setup</span>
+                <h3>Konfigurasi Supabase Anda</h3>
+                <p>Masukkan URL dan Anon Key dari proyek Supabase Anda.</p>
+            </div>
+            <form id="configForm">
+                <div class="form-group">
+                    <label for="supabaseUrl">Supabase Project URL</label>
+                    <input type="text" id="supabaseUrl" required placeholder="https://xyzproject.supabase.co">
+                </div>
+                <div class="form-group">
+                    <label for="supabaseKey">Supabase Anon Key</label>
+                    <input type="password" id="supabaseKey" required placeholder="eyJhbGciOiJIUzI1NiIsIn..." >
+                </div>
+                <button type="submit" class="btn btn-primary btn-block">Simpan & Hubungkan</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Modal Pendaftaran Kelas -->
+    <div class="modal" id="enrollModal">
+        <div class="modal-content">
+            <button class="modal-close" id="closeModal">&times;</button>
+            <div class="modal-header">
+                <span class="badge-modal">Pendaftaran Kelas</span>
+                <h3 id="modalClassName">Daftar Kelas</h3>
+                <p>Data pendaftaran akan masuk ke antrean persetujuan Admin.</p>
+            </div>
+            <form id="enrollForm">
+                <input type="hidden" id="classIdInput">
+                <div class="form-group">
+                    <label for="fullName">Nama Lengkap</label>
+                    <input type="text" id="fullName" required placeholder="Nama Anda">
+                </div>
+                <div class="form-group">
+                    <label for="email">Email</label>
+                    <input type="email" id="email" required placeholder="email@example.com">
+                </div>
+                <div class="form-group">
+                    <label for="whatsapp">WhatsApp</label>
+                    <input type="tel" id="whatsapp" required placeholder="08123456789">
+                </div>
+                <button type="submit" class="btn btn-primary btn-block">Kirim Pendaftaran</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Modal Pendaftaran Mentor -->
+    <div class="modal" id="mentorModal">
+        <div class="modal-content">
+            <button class="modal-close" id="closeMentorModal">&times;</button>
+            <div class="modal-header">
+                <span class="badge-modal accent">Pendaftaran Mentor Baru</span>
+                <h3>Daftar Jadi Mentor</h3>
+                <p>Pendaftaran akan ditinjau oleh Admin sebelum tampil di publik.</p>
+            </div>
+            <form id="mentorForm">
+                <div class="form-group">
+                    <label for="mentorName">Nama Lengkap & Gelar</label>
+                    <input type="text" id="mentorName" required placeholder="Nama & Gelar">
+                </div>
+                <div class="form-group">
+                    <label for="mentorRole">Keahlian / Peran</label>
+                    <input type="text" id="mentorRole" required placeholder="Contoh: Frontend Developer">
+                </div>
+                <div class="form-group">
+                    <label for="mentorBio">Bio Singkat</label>
+                    <textarea id="mentorBio" rows="3" placeholder="Pengalaman Anda..."></textarea>
+                </div>
+                <button type="submit" class="btn btn-accent btn-block">Kirim Pendaftaran Mentor</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Toast Notification -->
+    <div class="toast" id="toastNotification">
+        <span id="toastMessage">Berhasil!</span>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>
